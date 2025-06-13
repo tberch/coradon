@@ -1,0 +1,84 @@
+<!-- Services Grid -->
+<div class="services-grid">
+    <div class="service-card">
+        <div class="service-header">
+            <h3>Professional Radon Testing</h3>
+        </div>
+        <div class="service-body">
+            <div class="service-price">$150</div>
+            <p>48-hour testing with continuous radon monitors</p>
+            <button class="btn add-to-cart" data-id="testing" data-name="Professional Radon Testing" data-price="150">Add to Cart</button>
+        </div>
+    </div>
+    
+    <div class="service-card">
+        <div class="service-header">
+            <h3>Standard Mitigation</h3>
+        </div>
+        <div class="service-body">
+            <div class="service-price">$1,350</div>
+            <p>Sub-slab depressurization system for most homes</p>
+            <button class="btn add-to-cart" data-id="standard" data-name="Standard Mitigation System" data-price="1350">Add to Cart</button>
+        </div>
+    </div>
+    
+    <div class="service-card">
+        <div class="service-header">
+            <h3>Advanced Mitigation</h3>
+        </div>
+        <div class="service-body">
+            <div class="service-price">$1,750</div>
+            <p>For high radon levels or complex foundations</p>
+            <button class="btn add-to-cart" data-id="advanced" data-name="Advanced Mitigation System" data-price="1750">Add to Cart</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.service-header {
+    background-color: var(--primary);
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.service-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.service-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.service-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.service-body .btn {
+    width: 100%;
+    margin-top: 20px;
+}
+</style>

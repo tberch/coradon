@@ -1,0 +1,198 @@
+<!-- Services Section -->
+<div class="section-title">
+    <h2>Our Services</h2>
+    <p>Choose from our professional radon testing and mitigation services to keep your home safe. All services are performed by certified professionals.</p>
+</div>
+
+<div class="services-grid">
+    <div class="service-card">
+        <div class="service-header">
+            <h3>Professional Radon Testing</h3>
+        </div>
+        <div class="service-body">
+            <div class="service-price">$150</div>
+            <div class="service-description">
+                <p>Accurate radon testing using state-of-the-art continuous radon monitors, conducted by certified professionals.</p>
+            </div>
+            <ul class="service-features">
+                <li>48-hour testing period</li>
+                <li>Detailed report with hourly readings</li>
+                <li>EPA approved testing device</li>
+                <li>Results available immediately</li>
+                <li>Includes placement consultation</li>
+            </ul>
+            <div class="service-footer">
+                <button class="btn add-to-cart" style="width: 100%;" data-id="testing" data-name="Professional Radon Testing" data-price="150">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="service-card">
+        <div class="service-header">
+            <h3>Standard Mitigation System</h3>
+        </div>
+        <div class="service-body">
+            <div class="service-price">$1,350</div>
+            <div class="service-description">
+                <p>Our most common radon mitigation system for homes with basement or slab foundations. Effectively reduces radon levels below 4.0 pCi/L.</p>
+            </div>
+            <ul class="service-features">
+                <li>Sub-slab depressurization system</li>
+                <li>Exterior system installation</li>
+                <li>Energy-efficient RP140 fan</li>
+                <li>System manometer</li>
+                <li>Lifetime warranty</li>
+            </ul>
+            <div class="service-footer">
+                <button class="btn add-to-cart" style="width: 100%;" data-id="standard" data-name="Standard Mitigation System" data-price="1350">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="service-card">
+        <div class="service-header">
+            <h3>Premium Mitigation System</h3>
+        </div>
+        <div class="service-body">
+            <div class="service-price">$1,500</div>
+            <div class="service-description">
+                <p>Enhanced radon mitigation system for homes with challenging foundations or moderately elevated radon levels (10-20 pCi/L).</p>
+            </div>
+            <ul class="service-features">
+                <li>Premium RP145 radon fan</li>
+                <li>Multiple suction points as needed</li>
+                <li>Digital system monitor</li>
+                <li>Aesthetic system placement</li>
+                <li>Lifetime warranty + annual checkups</li>
+            </ul>
+            <div class="service-footer">
+                <button class="btn add-to-cart" style="width: 100%;" data-id="premium" data-name="Premium Mitigation System" data-price="1500">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="service-card">
+        <div class="service-header">
+            <h3>Advanced Mitigation System</h3>
+        </div>
+        <div class="service-body">
+            <div class="service-price">$1,750</div>
+            <div class="service-description">
+                <p>Specialized system for homes with high radon levels (20-40 pCi/L) or complex foundations requiring additional work.</p>
+            </div>
+            <ul class="service-features">
+                <li>High-capacity RP260 radon fan</li>
+                <li>Multiple suction points</li>
+                <li>Pressure field extension optimization</li>
+                <li>Smart monitoring system</li>
+                <li>Extended 5-year service plan</li>
+            </ul>
+            <div class="service-footer">
+                <button class="btn add-to-cart" style="width: 100%;" data-id="advanced" data-name="Advanced Mitigation System" data-price="1750">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="service-card">
+        <div class="service-header">
+            <h3>Ultimate Protection System</h3>
+        </div>
+        <div class="service-body">
+            <div class="service-price">$2,000</div>
+            <div class="service-description">
+                <p>Our most comprehensive system for large homes, extremely high radon levels (40+ pCi/L), or complex foundation types requiring extensive customization.</p>
+            </div>
+            <ul class="service-features">
+                <li>Dual-fan system configuration</li>
+                <li>Custom-designed solution</li>
+                <li>Multiple suction points</li>
+                <li>Smartphone monitoring app</li>
+                <li>10-year comprehensive service plan</li>
+            </ul>
+            <div class="service-footer">
+                <button class="btn add-to-cart" style="width: 100%;" data-id="ultimate" data-name="Ultimate Protection System" data-price="2000">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.service-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.service-header {
+    background-color: var(--primary);
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.service-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.service-body {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.service-description {
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.service-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.service-features li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 10px;
+}
+
+.service-features li:before {
+    content: "\f00c";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+}
+
+.service-footer {
+    margin-top: auto;
+}
+</style>

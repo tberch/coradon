@@ -1,0 +1,72 @@
+                } catch (error) {
+                    alert('Error reading file. Please ensure it\'s a valid JSON file.');
+                    console.error('Import error:', error);
+                }
+            };
+            
+            reader.readAsText(file);
+            
+            // Clear the file input
+            event.target.value = '';
+        }
+        
+        // Automatic backup every 5 invoices
+        function autoBackup() {
+            if (invoices.length > 0 && invoices.length % 5 === 0) {
+                const lastBackup = localStorage.getItem('lastAutoBackup');
+                const currentInvoiceCount = invoices.length;
+                
+                if (!lastBackup || parseInt(lastBackup) < currentInvoiceCount) {
+                    console.log('Auto-backup triggered');
+                    localStorage.setItem('lastAutoBackup', currentInvoiceCount.toString());
+                    
+                    // Create backup in localStorage with timestamp
+                    const backupData = {
+                        invoices: invoices,
+                        invoiceCounter: invoiceCounter,
+                        backupDate: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('radonInvoicesBackup', JSON.stringify(backupData));
+                    
+                    // Show backup notification
+                    if (document.getElementById('successMessage')) {
+                        const backupMsg = document.createElement('div');
+                        backupMsg.className = 'alert alert-info';
+                        backupMsg.style.margin = '10px 0';
+                        backupMsg.innerHTML = '<i class="fas fa-shield-alt"></i> Auto-backup created!';
+                        document.getElementById('successMessage').parentNode.insertBefore(backupMsg, document.getElementById('successMessage').nextSibling);
+                        
+                        setTimeout(() => backupMsg.remove(), 3000);
+                    }
+                }
+            }
+        }
+        
+        // Email backup function
+        function emailBackup() {
+            if (invoices.length === 0) {
+                alert('No invoices to backup.');
+                return;
+            }
+            
+            const exportData = {
+                invoices: invoices,
+                invoiceCounter: invoiceCounter,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const subject = `Colorado Radon Invoice Backup - ${new Date().toLocaleDateString()}`;
+            const body = `Invoice backup file attached.\n\nBackup contains ${invoices.length} invoices.\nGenerated: ${new Date().toLocaleString()}\n\nTo restore: Import this JSON file in the admin panel.`;
+            
+            // Create a data URI
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+            
+            const mailto = `mailto:tom@colradon.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}\n\nBackup data (copy and save as .json file):\n${encodeURIComponent(dataStr.substring(0, 500))}...`;
+            window.open(mailto);
+        }
+    </script>
+</body>
+</html>

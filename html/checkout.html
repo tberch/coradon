@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Colorado Radon Solutions</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2c6e49;
+            --secondary: #4c956c;
+            --accent: #d68c45;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .checkout-section {
+            padding: 60px 0;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .checkout-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+        
+        .order-summary {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-items {
+            margin-bottom: 20px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        
+        .payment-form {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .back-to-cart {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .back-to-cart:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            margin-top: 60px;
+        }
+        
+        footer p {
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .order-summary, .payment-form {
+                width: 100%;
+            }
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .alert-info {
+            background-color: #e3f2fd;
+            border: 1px solid #2196f3;
+            color: #0d47a1;
+        }
+        
+        .alert-warning {
+            background-color: #fff3e0;
+            border: 1px solid #ff9800;
+            color: #e65100;
+        }
+        
+        .empty-cart-message {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .payment-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            margin-top: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .amount-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border: 1px dashed #ccc;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-right: 5px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            background-color: #f5f5f5;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-color: #ddd;
+            border-bottom-color: white;
+            margin-bottom: -1px;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Colorado <span>Radon</span> Solutions</a>
+        </div>
+    </header>
+    
+    <section class="checkout-section">
+        <div class="container">
+            <h1>Secure Checkout</h1>
+            
+            <div id="checkout-content">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Colorado Radon Solutions. All Rights Reserved.</p>
+            <p>Certified Colorado Radon Professional</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get cart from localStorage
+            const cart = JSON.parse(localStorage.getItem('radonCart')) || [];
+            const checkoutContent = document.getElementById('checkout-content');
+            
+            // If cart is empty, show message and back button
+            if (cart.length === 0) {
+                checkoutContent.innerHTML = `
+                    <div class="empty-cart-message">
+                        <h2>Your cart is empty</h2>
+                        <p>Please add services to your cart before proceeding to checkout.</p>
+                        <a href="index.html#services" class="btn" style="max-width: 300px; margin: 20px auto 0; display: block;">Browse Services</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Calculate total
+            const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+            
+            // Create item descriptions
+            let itemsHtml = '';
+            cart.forEach(item => {
+                itemsHtml += `
+                    <div class="cart-item">
+                        <div>${item.name}</div>
+                        <div>$${parseFloat(item.price).toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            // Render checkout form
+            checkoutContent.innerHTML = `
+                <div class="checkout-container">
+                    <div class="order-summary">
+                        <h2 class="section-title">Order Summary</h2>
+                        
+                        <div class="cart-items">
+                            ${itemsHtml}
+                        </div>
+                        
+                        <div class="order-total">
+                            <div>Total</div>
+                            <div>$${total.toFixed(2)}</div>
+                        </div>
+                        
+                        <div class="alert alert-warning" style="margin-top: 20px;">
+                            <strong>Important:</strong> Please remember to enter the amount $${total.toFixed(2)} in the payment form.
+                        </div>
+                        
+                        <a href="index.html#cart" class="back-to-cart">
+                            <i class="fas fa-arrow-left"></i> Back to Cart
+                        </a>
+                    </div>
+                    
+                    <div class="payment-form">
+                        <div class="tabs">
+                            <div class="tab active" data-tab="customer-info">1. Customer Information</div>
+                            <div class="tab" data-tab="payment">2. Payment</div>
+                        </div>
+                        
+                        <div id="customer-info" class="tab-content active">
+                            <h2 class="section-title">Customer Information</h2>
+                            
+                            <form id="customer-form">
+                                <div class="form-group">
+                                    <label for="name">Full Name</label>
+                                    <input type="text" id="name" class="form-control" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" class="form-control" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" class="form-control" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" id="address" class="form-control" required>
+                                </div>
+                                
+                                <button type="submit" class="btn">Proceed to Payment</button>
+                            </form>
+                        </div>
+                        
+                        <div id="payment" class="tab-content">
+                            <h2 class="section-title">Payment Form</h2>
+                            
+                            <div class="amount-display">
+                                Please enter: $${total.toFixed(2)}
+                            </div>
+                            
+                            <!-- Stripe payment will be integrated here -->
+                            <div id="stripe-payment-element">
+                                <!-- Stripe Elements will mount here -->
+                            </div>
+                            
+                            <button id="payment-complete" class="btn">Complete Payment</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Set up tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Only allow clicking on payment tab after customer info is completed
+                    if (this.dataset.tab === 'payment' && !localStorage.getItem('customerInfo')) {
+                        alert('Please fill out your information first.');
+                        return;
+                    }
+                    
+                    // Update active tab
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    document.getElementById(this.dataset.tab).classList.add('active');
+                });
+            });
+            
+            // Handle customer form submission
+            const customerForm = document.getElementById('customer-form');
+            customerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const customerInfo = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    orderItems: cart,
+                    orderTotal: total.toFixed(2),
+                    orderDate: new Date().toISOString()
+                };
+                
+                // Store customer info in localStorage
+                localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
+                
+                // Switch to payment tab
+                document.querySelector('.tab[data-tab="payment"]').click();
+                
+                // Initialize Stripe payment here
+                initializeStripePayment(total);
+            });
+            
+            // Handle payment completion
+            const paymentComplete = document.getElementById('payment-complete');
+            paymentComplete.addEventListener('click', function() {
+                // Get customer info
+                const customerInfo = JSON.parse(localStorage.getItem('customerInfo'));
+                
+                if (!customerInfo) {
+                    alert('Please fill out your information first.');
+                    return;
+                }
+                
+                // Add payment status
+                customerInfo.paymentStatus = 'completed';
+                
+                // Send order data
+                fetch('https://formsubmit.co/tom@colradon.com', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(customerInfo)
+                })
+                .then(response => {
+                    console.log('Order submitted successfully');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                
+                // Store completed order
+                localStorage.setItem('lastCompletedOrder', JSON.stringify(customerInfo));
+                
+                // Clear the cart and customer info
+                localStorage.removeItem('radonCart');
+                localStorage.removeItem('customerInfo');
+                
+                // Redirect to success page
+                window.location.href = 'checkout-success.html';
+            });
+        });
+
+        function initializeStripePayment(amount) {
+            // This function will be called when integrating with Stripe
+            // For now, it's a placeholder
+            console.log('Initializing Stripe payment for amount:', amount);
+            
+            // TODO: Add Stripe integration here
+            // You'll need to load Stripe.js and use your publishable key
+        }
+    </script>
+</body>
+</html>

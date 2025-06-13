@@ -1,0 +1,88 @@
+<!-- Stats Section -->
+<div class="section-wrapper">
+    <div class="section-title">
+        <h2>What Is Radon?</h2>
+        <p>Radon is a colorless, odorless, radioactive gas that comes from the natural breakdown of uranium in soil, rock, and water. It enters homes through cracks in foundations, wall joints, sump pits, floor drains, and water supply. Radon is measured in picocuries per liter (pCi/L) and the EPA recommends taking action at levels of 4 pCi/L or higher.</p>
+        <p>Colorado's geology, with uranium-rich rocks and high altitude, makes our state particularly susceptible to high radon levels. Many areas of Colorado have been identified as having elevated radon potential.</p>
+    </div>
+</div>
+
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="number">6.8 pCi/L</div>
+        <h3>Average Radon Level</h3>
+        <p>The average radon level in Colorado homes is 6.8 pCi/L, well above the EPA's action level of 4 pCi/L, making Colorado one of the highest radon states in the nation.</p>
+    </div>
+    
+    <div class="stat-card">
+        <div class="number">500+</div>
+        <h3>Annual Deaths</h3>
+        <p>Radon causes an estimated 500+ deaths per year in Colorado alone, making it a significant public health concern that can be addressed through proper mitigation.</p>
+    </div>
+    
+    <div class="stat-card">
+        <div class="number">50%</div>
+        <h3>Colorado Homes at Risk</h3>
+        <p>Approximately 50% of Colorado homes tested have radon levels at or above 4 pCi/L. Many counties in Colorado are classified as EPA Radon Zone 1, indicating highest potential for elevated radon levels.</p>
+    </div>
+</div>
+
+<style>
+.section-wrapper {
+    background-color: var(--light);
+    padding: 50px 0;
+    margin-bottom: 50px;
+    color: var(--dark);  /* Dark text on light background */
+}
+
+.section-title {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.section-title h2 {
+    color: var(--primary);
+}
+
+.section-title p {
+    line-height: 1.8;
+    margin-bottom: 15px;
+    color: var(--dark);
+}
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 300px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    color: var(--dark);  /* Dark text in cards */
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card .number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.stat-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+</style>

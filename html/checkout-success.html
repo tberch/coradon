@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Colorado Radon Solutions</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2c6e49;
+            --secondary: #4c956c;
+            --accent: #d68c45;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .success-section {
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .success-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .order-id {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .next-steps {
+            text-align: left;
+            max-width: 500px;
+            margin: 30px auto;
+        }
+        
+        .next-steps h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .next-steps ul {
+            padding-left: 20px;
+        }
+        
+        .next-steps li {
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            margin-top: 60px;
+        }
+        
+        footer p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Colorado <span>Radon</span> Solutions</a>
+        </div>
+    </header>
+    
+    <section class="success-section">
+        <div class="container">
+            <div class="success-container">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h1>Order Confirmed!</h1>
+                <p>Thank you for choosing Colorado Radon Solutions. Your order has been successfully placed.</p>
+                
+                <div class="order-id">
+                    <strong>Order ID:</strong> <span id="order-id">RADON-20250421-1234</span>
+                </div>
+                
+                <p>A confirmation email has been sent to <span id="customer-email">your email address</span>.</p>
+                
+                <div class="next-steps">
+                    <h3>What's Next?</h3>
+                    <ul>
+                        <li>Our team will contact you within 1-2 business days to schedule your service.</li>
+                        <li>Please have your order ID ready when we call.</li>
+                        <li>If you have any questions, please contact us at (415) 481-1130 or tom@colradon.com.</li>
+                    </ul>
+                </div>
+                
+                <a href="index.html" class="btn">Return to Homepage</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Colorado Radon Solutions. All Rights Reserved.</p>
+            <p>Certified Colorado Radon Professional</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get stored order ID (from OrderManager)
+            const orderId = localStorage.getItem('latestOrderId') || 
+                           ('RADON-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + 
+                           '-' + Math.floor(1000 + Math.random() * 9000));
+            
+            document.getElementById('order-id').textContent = orderId;
+            
+            // Get email from localStorage if available
+            const email = localStorage.getItem('customerEmail');
+            if (email) {
+                document.getElementById('customer-email').textContent = email;
+            }
+            
+            // Optional: Track this conversion in analytics
+            if (typeof gtag === 'function') {
+                gtag('event', 'purchase', {
+                    'transaction_id': orderId,
+                    'value': localStorage.getItem('orderTotal') || 0,
+                    'currency': 'USD'
+                });
+            }
+        });
+    </script>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6807965d753e2219109a8b5f/1ipeq6nok';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+
+    <!-- Tawk.to event handlers -->
+    <script>
+    // Tawk.to event handlers
+    if (typeof Tawk_API !== 'undefined') {
+        // When chat widget is loaded
+        Tawk_API.onLoad = function() {
+            console.log('Tawk chat widget loaded');
+            
+            // Set attributes if available
+            const email = localStorage.getItem('customerEmail');
+            if (email) {
+                Tawk_API.setAttributes({
+                    email: email
+                }, function(error) {
+                    if (error) console.error('Error setting visitor attributes:', error);
+                });
+            }
+        };
+        
+        // When chat is started by visitor
+        Tawk_API.onChatStarted = function() {
+            // Get order ID
+            const orderId = document.getElementById('order-id').textContent;
+            
+            // Send order info to agent
+            setTimeout(() => {
+                Tawk_API.sendMessage(`[System: This visitor has just completed an order. Order ID: ${orderId}]`);
+            }, 1000);
+        };
+    }
+    </script>
+</body>
+</html>
