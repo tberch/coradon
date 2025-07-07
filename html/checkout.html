@@ -211,33 +211,24 @@
             color: #e65100;
         }
         
+        .alert-error {
+            background-color: #ffebee;
+            border: 1px solid #f44336;
+            color: #c62828;
+        }
+        
+        .alert-success {
+            background-color: #e8f5e8;
+            border: 1px solid #4caf50;
+            color: #2e7d32;
+        }
+        
         .empty-cart-message {
             text-align: center;
             padding: 30px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .payment-iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-            margin-top: 20px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .amount-display {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 4px;
-            border: 1px dashed #ccc;
         }
         
         .btn {
@@ -261,37 +252,40 @@
             background-color: var(--secondary);
         }
         
-        .tabs {
-            display: flex;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ddd;
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
         
-        .tab {
-            padding: 10px 15px;
+        .payment-options {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .payment-option {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
             cursor: pointer;
-            border: 1px solid transparent;
-            border-bottom: none;
-            margin-right: 5px;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-            background-color: #f5f5f5;
+            transition: all 0.3s;
+            text-align: center;
         }
         
-        .tab.active {
-            background-color: white;
-            border-color: #ddd;
-            border-bottom-color: white;
-            margin-bottom: -1px;
-            font-weight: bold;
+        .payment-option:hover {
+            border-color: var(--primary);
+            background-color: rgba(44, 110, 73, 0.05);
         }
         
-        .tab-content {
-            display: none;
+        .payment-option h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
         }
         
-        .tab-content.active {
-            display: block;
+        .payment-option i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent);
         }
     </style>
 </head>
@@ -314,13 +308,16 @@
     
     <footer>
         <div class="container">
-            <p>&copy; <script>document.write(new Date().getFullYear())</script> Colorado Radon Solutions. All Rights Reserved.</p>
+            <p>&copy; <span id="current-year">2025</span> Colorado Radon Solutions. All Rights Reserved.</p>
             <p>Certified Colorado Radon Professional</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Update footer year
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
             // Get cart from localStorage
             const cart = JSON.parse(localStorage.getItem('radonCart')) || [];
             const checkoutContent = document.getElementById('checkout-content');
@@ -340,7 +337,10 @@
             // Calculate total
             const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
             
-            // Create item descriptions
+            // Create item descriptions for Stripe
+            const itemDescriptions = cart.map(item => `${item.name} ($${parseFloat(item.price).toFixed(2)})`).join(', ');
+            
+            // Create item descriptions HTML
             let itemsHtml = '';
             cart.forEach(item => {
                 itemsHtml += `
@@ -366,161 +366,240 @@
                             <div>$${total.toFixed(2)}</div>
                         </div>
                         
-                        <div class="alert alert-warning" style="margin-top: 20px;">
-                            <strong>Important:</strong> Please remember to enter the amount $${total.toFixed(2)} in the payment form.
+                        <div class="alert alert-info" style="margin-top: 20px;">
+                            <strong>Test Mode:</strong> This checkout is in test mode for development.
                         </div>
                         
-                        <a href="index.html#cart" class="back-to-cart">
-                            <i class="fas fa-arrow-left"></i> Back to Cart
+                        <a href="index.html" class="back-to-cart">
+                            <i class="fas fa-arrow-left"></i> Back to Services
                         </a>
                     </div>
                     
                     <div class="payment-form">
-                        <div class="tabs">
-                            <div class="tab active" data-tab="customer-info">1. Customer Information</div>
-                            <div class="tab" data-tab="payment">2. Payment</div>
-                        </div>
+                        <h2 class="section-title">Payment Options</h2>
                         
-                        <div id="customer-info" class="tab-content active">
-                            <h2 class="section-title">Customer Information</h2>
-                            
-                            <form id="customer-form">
-                                <div class="form-group">
-                                    <label for="name">Full Name</label>
-                                    <input type="text" id="name" class="form-control" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="email">Email Address</label>
-                                    <input type="email" id="email" class="form-control" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" id="phone" class="form-control" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <input type="text" id="address" class="form-control" required>
-                                </div>
-                                
-                                <button type="submit" class="btn">Proceed to Payment</button>
-                            </form>
-                        </div>
+                        <div id="payment-messages"></div>
                         
-                        <div id="payment" class="tab-content">
-                            <h2 class="section-title">Payment Form</h2>
-                            
-                            <div class="amount-display">
-                                Please enter: $${total.toFixed(2)}
+                        <form id="customer-form">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" class="form-control" required>
                             </div>
                             
-                            <!-- Stripe payment will be integrated here -->
-                            <div id="stripe-payment-element">
-                                <!-- Stripe Elements will mount here -->
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" class="form-control" required>
                             </div>
                             
-                            <button id="payment-complete" class="btn">Complete Payment</button>
-                        </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="address">Service Address *</label>
+                                <input type="text" id="address" class="form-control" required placeholder="Address where service will be performed">
+                            </div>
+                            
+                            <div class="payment-options">
+                                <div class="payment-option" id="stripe-option">
+                                    <i class="fab fa-cc-stripe"></i>
+                                    <h3>Pay with Credit/Debit Card</h3>
+                                    <p>Secure payment processing through Stripe</p>
+                                    <p><strong>Amount: $${total.toFixed(2)}</strong></p>
+                                    <button type="button" class="btn" id="stripe-checkout" disabled>
+                                        Pay Now with Stripe - $${total.toFixed(2)}
+                                    </button>
+                                </div>
+                                
+                                <div class="payment-option" id="contact-option">
+                                    <i class="fas fa-phone"></i>
+                                    <h3>Pay by Phone</h3>
+                                    <p>Call us to complete payment over the phone</p>
+                                    <p><strong>Phone: (415) 481-1130</strong></p>
+                                    <button type="button" class="btn" id="phone-payment" disabled>
+                                        Complete Order by Phone
+                                    </button>
+                                </div>
+                                
+                                <div class="payment-option" id="invoice-option">
+                                    <i class="fas fa-file-invoice"></i>
+                                    <h3>Request Invoice</h3>
+                                    <p>We'll send you an invoice to pay later</p>
+                                    <button type="button" class="btn" id="request-invoice" disabled>
+                                        Request Invoice
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             `;
             
-            // Set up tab functionality
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Only allow clicking on payment tab after customer info is completed
-                    if (this.dataset.tab === 'payment' && !localStorage.getItem('customerInfo')) {
-                        alert('Please fill out your information first.');
-                        return;
+            // Handle form validation and enable payment buttons
+            const form = document.getElementById('customer-form');
+            const inputs = form.querySelectorAll('input[required]');
+            const paymentButtons = document.querySelectorAll('.payment-option .btn');
+            
+            function checkFormValidity() {
+                let isValid = true;
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
                     }
-                    
-                    // Update active tab
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Show corresponding content
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    document.getElementById(this.dataset.tab).classList.add('active');
                 });
-            });
-            
-            // Handle customer form submission
-            const customerForm = document.getElementById('customer-form');
-            customerForm.addEventListener('submit', function(e) {
-                e.preventDefault();
                 
-                // Get form data
-                const customerInfo = {
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    address: document.getElementById('address').value,
-                    orderItems: cart,
-                    orderTotal: total.toFixed(2),
-                    orderDate: new Date().toISOString()
-                };
-                
-                // Store customer info in localStorage
-                localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
-                
-                // Switch to payment tab
-                document.querySelector('.tab[data-tab="payment"]').click();
-                
-                // Initialize Stripe payment here
-                initializeStripePayment(total);
-            });
-            
-            // Handle payment completion
-            const paymentComplete = document.getElementById('payment-complete');
-            paymentComplete.addEventListener('click', function() {
-                // Get customer info
-                const customerInfo = JSON.parse(localStorage.getItem('customerInfo'));
-                
-                if (!customerInfo) {
-                    alert('Please fill out your information first.');
-                    return;
+                // Email validation
+                const email = document.getElementById('email').value;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email && !emailRegex.test(email)) {
+                    isValid = false;
                 }
                 
-                // Add payment status
-                customerInfo.paymentStatus = 'completed';
+                paymentButtons.forEach(btn => {
+                    btn.disabled = !isValid;
+                });
+            }
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', checkFormValidity);
+                input.addEventListener('blur', checkFormValidity);
+            });
+            
+            // Stripe Checkout Button
+            document.getElementById('stripe-checkout').addEventListener('click', function() {
+                const customerInfo = getCustomerInfo();
                 
-                // Send order data
+                // Store customer info
+                localStorage.setItem('customerInfo', JSON.stringify(customerInfo));
+                
+                showMessage('payment-messages', 'Redirecting to secure Stripe payment...', 'info');
+                
+                // For testing purposes, simulate the payment process
+                setTimeout(() => {
+                    // In production, you would redirect to actual Stripe Checkout
+                    const confirmPayment = confirm(`TEST MODE: Simulate successful payment of $${total.toFixed(2)}?\n\nIn production, this would process a real payment through Stripe.`);
+                    
+                    if (confirmPayment) {
+                        customerInfo.paymentStatus = 'completed';
+                        customerInfo.paymentMethod = 'stripe_test';
+                        customerInfo.transactionId = 'test_' + Date.now();
+                        
+                        // Send order notification
+                        sendOrderNotification(customerInfo, 'stripe');
+                        
+                        localStorage.setItem('lastCompletedOrder', JSON.stringify(customerInfo));
+                        localStorage.removeItem('radonCart');
+                        localStorage.removeItem('customerInfo');
+                        window.location.href = 'checkout-success.html';
+                    }
+                }, 1500);
+            });
+            
+            // Phone Payment Button
+            document.getElementById('phone-payment').addEventListener('click', function() {
+                const customerInfo = getCustomerInfo();
+                customerInfo.paymentMethod = 'phone';
+                
+                // Store order for phone payment
+                localStorage.setItem('phoneOrder', JSON.stringify(customerInfo));
+                
+                // Send email notification
+                sendOrderNotification(customerInfo, 'phone');
+                
+                showMessage('payment-messages', 'Order submitted! We will call you within 1 business hour to complete payment. Order total: $' + total.toFixed(2), 'success');
+                
+                setTimeout(() => {
+                    localStorage.removeItem('radonCart');
+                    window.location.href = 'checkout-success.html?method=phone';
+                }, 3000);
+            });
+            
+            // Invoice Request Button
+            document.getElementById('request-invoice').addEventListener('click', function() {
+                const customerInfo = getCustomerInfo();
+                customerInfo.paymentMethod = 'invoice';
+                
+                // Store order for invoicing
+                localStorage.setItem('invoiceOrder', JSON.stringify(customerInfo));
+                
+                // Send email notification
+                sendOrderNotification(customerInfo, 'invoice');
+                
+                showMessage('payment-messages', 'Invoice request submitted! You will receive an invoice via email within 1 business day.', 'success');
+                
+                setTimeout(() => {
+                    localStorage.removeItem('radonCart');
+                    window.location.href = 'checkout-success.html?method=invoice';
+                }, 3000);
+            });
+            
+            function getCustomerInfo() {
+                return {
+                    name: document.getElementById('name').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    address: document.getElementById('address').value.trim(),
+                    orderItems: cart,
+                    orderTotal: total.toFixed(2),
+                    orderDate: new Date().toISOString(),
+                    itemDescriptions: itemDescriptions
+                };
+            }
+            
+            function sendOrderNotification(customerInfo, paymentMethod) {
+                // Create order summary for email
+                const orderSummary = `
+New Order - ${paymentMethod.toUpperCase()} Payment
+
+Customer Information:
+Name: ${customerInfo.name}
+Email: ${customerInfo.email}
+Phone: ${customerInfo.phone}
+Address: ${customerInfo.address}
+
+Order Details:
+${customerInfo.itemDescriptions}
+
+Total: $${customerInfo.orderTotal}
+Payment Method: ${paymentMethod}
+Order Date: ${new Date(customerInfo.orderDate).toLocaleString()}
+                `;
+                
+                // Send via FormSubmit
+                const formData = new FormData();
+                formData.append('_subject', `New Colorado Radon Order - ${paymentMethod.toUpperCase()}`);
+                formData.append('order_summary', orderSummary);
+                formData.append('customer_name', customerInfo.name);
+                formData.append('customer_email', customerInfo.email);
+                formData.append('customer_phone', customerInfo.phone);
+                formData.append('service_address', customerInfo.address);
+                formData.append('order_total', customerInfo.orderTotal);
+                formData.append('payment_method', paymentMethod);
+                
                 fetch('https://formsubmit.co/tom@colradon.com', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(customerInfo)
-                })
-                .then(response => {
-                    console.log('Order submitted successfully');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                    body: formData
+                }).catch(error => {
+                    console.error('Error sending notification:', error);
                 });
-                
-                // Store completed order
-                localStorage.setItem('lastCompletedOrder', JSON.stringify(customerInfo));
-                
-                // Clear the cart and customer info
-                localStorage.removeItem('radonCart');
-                localStorage.removeItem('customerInfo');
-                
-                // Redirect to success page
-                window.location.href = 'checkout-success.html';
-            });
+            }
         });
 
-        function initializeStripePayment(amount) {
-            // This function will be called when integrating with Stripe
-            // For now, it's a placeholder
-            console.log('Initializing Stripe payment for amount:', amount);
+        function showMessage(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
             
-            // TODO: Add Stripe integration here
-            // You'll need to load Stripe.js and use your publishable key
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 5000);
+            }
         }
     </script>
 </body>

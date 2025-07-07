@@ -185,33 +185,58 @@
     
     <footer>
         <div class="container">
-            <p>&copy; <script>document.write(new Date().getFullYear())</script> Colorado Radon Solutions. All Rights Reserved.</p>
+            <p>&copy; <span id="current-year">2025</span> Colorado Radon Solutions. All Rights Reserved.</p>
             <p>Certified Colorado Radon Professional</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get stored order ID (from OrderManager)
-            const orderId = localStorage.getItem('latestOrderId') || 
-                           ('RADON-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + 
-                           '-' + Math.floor(1000 + Math.random() * 9000));
+            // Update footer year
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Get URL parameters to customize message
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentMethod = urlParams.get('method');
+            
+            // Get completed order info
+            const completedOrder = JSON.parse(localStorage.getItem('lastCompletedOrder') || '{}');
+            
+            // Generate order ID
+            const orderId = 'RADON-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + 
+                           '-' + Math.floor(1000 + Math.random() * 9000);
             
             document.getElementById('order-id').textContent = orderId;
             
-            // Get email from localStorage if available
-            const email = localStorage.getItem('customerEmail');
-            if (email) {
-                document.getElementById('customer-email').textContent = email;
+            // Update email if available
+            if (completedOrder.email) {
+                document.getElementById('customer-email').textContent = completedOrder.email;
             }
             
-            // Optional: Track this conversion in analytics
-            if (typeof gtag === 'function') {
-                gtag('event', 'purchase', {
-                    'transaction_id': orderId,
-                    'value': localStorage.getItem('orderTotal') || 0,
-                    'currency': 'USD'
-                });
+            // Customize message based on payment method
+            const nextStepsElement = document.querySelector('.next-steps ul');
+            if (paymentMethod === 'phone') {
+                nextStepsElement.innerHTML = `
+                    <li><strong>We will call you within 1 business hour</strong> to complete payment over the phone.</li>
+                    <li>Please have your order ID ready: <strong>${orderId}</strong></li>
+                    <li>Our phone number: (415) 481-1130</li>
+                    <li>If you have any questions, email us at tom@colradon.com</li>
+                `;
+            } else if (paymentMethod === 'invoice') {
+                nextStepsElement.innerHTML = `
+                    <li><strong>You will receive an invoice via email</strong> within 1 business day.</li>
+                    <li>Please reference your order ID: <strong>${orderId}</strong></li>
+                    <li>Service will be scheduled after payment is received.</li>
+                    <li>Questions? Contact us at (415) 481-1130 or tom@colradon.com</li>
+                `;
+            } else {
+                // Default (Stripe payment completed)
+                nextStepsElement.innerHTML = `
+                    <li><strong>Payment confirmed!</strong> Our team will contact you within 1-2 business days to schedule your service.</li>
+                    <li>Please have your order ID ready: <strong>${orderId}</strong></li>
+                    <li>You will receive a receipt via email shortly.</li>
+                    <li>Questions? Contact us at (415) 481-1130 or tom@colradon.com</li>
+                `;
             }
         });
     </script>
