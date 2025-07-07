@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Page - Colorado Radon Solutions</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; }
+        .error { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>Debug Test Page</h1>
+    
+    <div class="test">
+        <h3>Basic HTML Test</h3>
+        <p>If you can see this text, basic HTML is working fine.</p>
+    </div>
+    
+    <div class="test">
+        <h3>JavaScript Test</h3>
+        <p id="js-test">JavaScript not loaded...</p>
+    </div>
+    
+    <div class="test">
+        <h3>Component Loading Test</h3>
+        <div id="component-test">Testing component loading...</div>
+    </div>
+    
+    <script>
+        // Test basic JavaScript
+        document.getElementById('js-test').textContent = 'JavaScript is working!';
+        document.getElementById('js-test').parentElement.classList.add('success');
+        
+        // Test component loading
+        async function testComponentLoading() {
+            try {
+                const response = await fetch('components/hero.html');
+                if (response.ok) {
+                    const html = await response.text();
+                    document.getElementById('component-test').innerHTML = 'Component loading works! Hero component loaded successfully.';
+                    document.getElementById('component-test').parentElement.classList.add('success');
+                } else {
+                    throw new Error('Failed to load component');
+                }
+            } catch (error) {
+                document.getElementById('component-test').innerHTML = 'Component loading failed: ' + error.message;
+                document.getElementById('component-test').parentElement.classList.add('error');
+            }
+        }
+        
+        testComponentLoading();
+        
+        // Check for any global variables that might be causing issues
+        console.log('Window objects that might contain "2025":', Object.keys(window).filter(key => 
+            typeof window[key] === 'string' && window[key].includes('2025')
+        ));
+    </script>
+</body>
+</html>
